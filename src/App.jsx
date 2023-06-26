@@ -24,7 +24,7 @@ const App = () => {
 
     useEffect(() => {
         console.log(coordinates, corners);
-        getPlacesDetails().then((data) => {
+        getPlacesDetails(corners.sw, corners.ne).then((data) => {
             console.log(data);
             setPlaces(data);
         });
