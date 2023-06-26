@@ -16,12 +16,11 @@ import PlaceDetails from "../PlaceDetails/PlaceDetails";
 //css
 import useStyles from "./styles";
 
-const List = () => {
+const List = ({ places }) => {
     const [type, setType] = useState("restuarents");
     const [rating, setRating] = useState("");
     const classes = useStyles();
 
-    const places = [{ name: "place 1" }, { name: "place 2" }, { name: "place 3" }];
     return (
         <div className={classes.container}>
             <Typography variant="h4">Reastuarents, Hotels & Attraction around you</Typography>
