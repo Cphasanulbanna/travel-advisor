@@ -51,6 +51,17 @@ const PlaceDetails = ({ place }) => {
                         {place.price_level}
                     </Typography>
                 </Box>
+                <Box
+                    style={{ display: "flex", justifyContent: "space-between", margin: "10px 0" }}
+                    display="flex"
+                    justifyContent="space-between"
+                >
+                    <Rating
+                        value={Number(place?.rating)}
+                        readOnly
+                    />
+                    <Typography variant="subtitle1">out of {place?.num_reviews} reviews</Typography>
+                </Box>
 
                 <Box
                     display="flex"
