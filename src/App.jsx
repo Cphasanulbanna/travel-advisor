@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+//MUI components
 import { CssBaseline, Grid } from "@material-ui/core";
 
 //components
@@ -15,6 +16,7 @@ const App = () => {
     const [places, setPlaces] = useState([]);
     const [coordinates, setCoordinates] = useState({});
     const [corners, setCorners] = useState({});
+    const [childClicked, setChildClicked] = useState(null);
 
     //fetching current location
     useEffect(() => {
@@ -28,6 +30,8 @@ const App = () => {
             setPlaces(data);
         });
     }, [coordinates, corners]);
+
+    console.log({ childClicked });
     return (
         <>
             <CssBaseline />
@@ -42,7 +46,10 @@ const App = () => {
                     xs={12}
                     md={4}
                 >
-                    <List places={places} />
+                    <List
+                        places={places}
+                        childClicked={childClicked}
+                    />
                 </Grid>
 
                 <Grid
@@ -55,6 +62,7 @@ const App = () => {
                         coordinates={coordinates}
                         setCorners={setCorners}
                         places={places}
+                        setChildClicked={setChildClicked}
                     />
                 </Grid>
             </Grid>

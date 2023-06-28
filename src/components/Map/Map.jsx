@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 //packages
 import GoogleMapReact from "google-map-react";
+
+//MUI components
 import { Paper, Typography, useMediaQuery } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 
@@ -10,14 +12,10 @@ import LocationOnOutlinedIcon from "@material-ui/icons/LocationOnOutlined";
 
 //css
 import useStyles from "./styles";
-import Marker from "google-map-react";
-import { MarkerF } from "@react-google-maps/api";
 
-const Map = ({ coordinates, setCoordinates, setCorners, places }) => {
+const Map = ({ coordinates, setCoordinates, setCorners, places, setChildClicked }) => {
     const classes = useStyles();
     const isDesktop = useMediaQuery("(min-width: 600px)");
-
-    console.log(places, "places");
 
     return (
         <div className={classes.mapContainer}>
@@ -27,12 +25,12 @@ const Map = ({ coordinates, setCoordinates, setCorners, places }) => {
                 center={coordinates}
                 defaultZoom={14}
                 margin={[50, 50, 50, 50]}
-                // options={""}
+                options={""}
                 onChange={(e) => {
                     setCoordinates({ lat: e.center.lat, lng: e.center.lng });
                     setCorners({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
                 }}
-                onChildClick={""}
+                onChildClick={(child) => setChildClicked(child)}
             >
                 {places?.map((place, index) => (
                     <div
@@ -41,43 +39,39 @@ const Map = ({ coordinates, setCoordinates, setCorners, places }) => {
                         lat={Number(place?.latitude)}
                         lng={Number(place?.longitude)}
                         key={index}
-                        position={{
-                            lat: Number(place?.latitude),
-                            lng: Number(place?.longitude),
-                        }}
                     >
-                        {/* {isDesktop ? (
+                        {!isDesktop ? (
                             <LocationOnOutlinedIcon
                                 color="primary"
                                 fontSize="large"
                             />
-                        ) : ( */}
-                        <Paper
-                            elevation={3}
-                            className={classes.paper}
-                        >
-                            <Typography
-                                className={classes?.typography}
-                                variant="subtitle2"
-                                gutterBottom
+                        ) : (
+                            <Paper
+                                elevation={3}
+                                className={classes.paper}
                             >
-                                {place.name}
-                            </Typography>
-                            <img
-                                className={classes?.pointer}
-                                src={
-                                    place.photo?.images.large.url ||
-                                    "https://im1.dineout.co.in/images/uploads/restaurant/sharpen/9/f/b/p96998-166220853463134a16b48fa.jpg?w=400"
-                                }
-                                alt="place"
-                            />
-                            <Rating
-                                size="small"
-                                value={Number(Number(place?.rating))}
-                                readOnly
-                            />
-                        </Paper>
-                        {/* )} */}
+                                <Typography
+                                    className={classes?.typography}
+                                    variant="string"
+                                    gutterBottom
+                                >
+                                    {place.name}
+                                </Typography>
+                                <img
+                                    className={classes?.pointer}
+                                    src={
+                                        place.photo?.images.large.url ||
+                                        "https://im1.dineout.co.in/images/uploads/restaurant/sharpen/9/f/b/p96998-166220853463134a16b48fa.jpg?w=400"
+                                    }
+                                    alt="place"
+                                />
+                                <Rating
+                                    size="small"
+                                    value={Number(Number(place?.rating))}
+                                    readOnly
+                                />
+                            </Paper>
+                        )}
                     </div>
                 ))}
             </GoogleMapReact>

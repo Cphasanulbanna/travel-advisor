@@ -1,7 +1,6 @@
 import React from "react";
 
-//packages
-import { Autocomplete } from "@react-google-maps/api";
+//MUI components
 import { AppBar, Toolbar, Typography, InputBase, Box } from "@material-ui/core";
 
 //icons

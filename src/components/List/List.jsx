@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 
 //packages
 import {
@@ -13,13 +13,22 @@ import {
 
 //components
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
+
 //css
 import useStyles from "./styles";
 
-const List = ({ places }) => {
+const List = ({ places, childClicked }) => {
     const [type, setType] = useState("restuarents");
     const [rating, setRating] = useState("");
+    const [elementRefs, setElementRefs] = useState([]);
     const classes = useStyles();
+
+    useEffect(() => {
+        const refs = Array(places.length)
+            .fill()
+            .map((_, index) => elementRefs[index] || createRef());
+        setElementRefs(refs);
+    }, [places]);
 
     return (
         <div className={classes.container}>
@@ -58,7 +67,11 @@ const List = ({ places }) => {
                         key={index}
                         xs={12}
                     >
-                        <PlaceDetails place={place} />
+                        <PlaceDetails
+                            place={place}
+                            selected={Number(childClicked) === index}
+                            refProp={elementRefs[index]}
+                        />
                     </Grid>
                 ))}
             </Grid>
