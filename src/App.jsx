@@ -30,18 +30,20 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        const filteredData = places?.filter((place) => place?.rating > rating);
+        const filteredData = places?.filter((place) => Number(place?.rating) > rating);
         setFilteredPlaces(filteredData);
     }, [rating]);
 
     useEffect(() => {
-        setLoading(true);
-        getPlacesDetails(type, corners?.sw, corners?.ne).then((data) => {
-            setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
-            setFilteredPlaces([]);
-            setRating("");
-            setLoading(false);
-        });
+        if (corners) {
+            setLoading(true);
+            getPlacesDetails(type, corners?.sw, corners?.ne).then((data) => {
+                setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+                setFilteredPlaces([]);
+                setRating("");
+                setLoading(false);
+            });
+        }
     }, [type, corners]);
 
     return (

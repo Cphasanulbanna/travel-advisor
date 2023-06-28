@@ -33,7 +33,7 @@ const List = ({ places, childClicked, isLoading, type, rating, setType, setRatin
         <div className={classes.container}>
             <Typography variant="h4">Reastuarents, Hotels & Attraction around you</Typography>
             {isLoading ? (
-                <div className={classes.isLoading}>
+                <div className={classes.loading}>
                     <CircularProgress size="5rem" />
                 </div>
             ) : (
@@ -68,7 +68,6 @@ const List = ({ places, childClicked, isLoading, type, rating, setType, setRatin
                     >
                         {places?.map((place, index) => (
                             <Grid
-                                item
                                 key={index}
                                 xs={12}
                                 ref={elementRefs[index]}
