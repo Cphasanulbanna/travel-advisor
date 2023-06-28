@@ -14,6 +14,7 @@ import { getPlacesDetails } from "./api";
 const App = () => {
     //states
     const [places, setPlaces] = useState([]);
+    const [filteredPlaces, setFilteredPlaces] = useState([]);
     const [coordinates, setCoordinates] = useState({});
     const [corners, setCorners] = useState({});
     const [childClicked, setChildClicked] = useState(null);
@@ -29,9 +30,16 @@ const App = () => {
     }, []);
 
     useEffect(() => {
+        const filteredData = places?.filter((place) => place?.rating > rating);
+        setFilteredPlaces(filteredData);
+    }, [rating]);
+
+    useEffect(() => {
         setLoading(true);
         getPlacesDetails(type, corners?.sw, corners?.ne).then((data) => {
-            setPlaces(data);
+            setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
+            setFilteredPlaces([]);
+            setRating("");
             setLoading(false);
         });
     }, [type, coordinates, corners]);
@@ -51,7 +59,7 @@ const App = () => {
                     md={4}
                 >
                     <List
-                        places={places}
+                        places={filteredPlaces?.length ? filteredPlaces : places}
                         childClicked={childClicked}
                         isLoading={isLoading}
                         type={type}
@@ -70,7 +78,7 @@ const App = () => {
                         setCoordinates={setCoordinates}
                         coordinates={coordinates}
                         setCorners={setCorners}
-                        places={places}
+                        places={filteredPlaces?.length ? filteredPlaces : places}
                         setChildClicked={setChildClicked}
                     />
                 </Grid>
