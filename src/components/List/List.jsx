@@ -17,9 +17,7 @@ import PlaceDetails from "../PlaceDetails/PlaceDetails";
 //css
 import useStyles from "./styles";
 
-const List = ({ places, childClicked, isLoading }) => {
-    const [type, setType] = useState("restuarents");
-    const [rating, setRating] = useState("");
+const List = ({ places, childClicked, isLoading, type, rating, setType, setRating }) => {
     const [elementRefs, setElementRefs] = useState([]);
     const classes = useStyles();
 
@@ -43,10 +41,10 @@ const List = ({ places, childClicked, isLoading }) => {
                     <FormControl className={classes.formControl}>
                         <InputLabel>Type</InputLabel>
                         <Select
-                            value={""}
+                            value={type}
                             onChange={(e) => setType(e.target.value)}
                         >
-                            <MenuItem value="restuarents">Restuarents</MenuItem>
+                            <MenuItem value="restaurants">Restaurants</MenuItem>
                             <MenuItem value="hotels">Hotels</MenuItem>
                             <MenuItem value="attractions">Attractions</MenuItem>
                         </Select>
