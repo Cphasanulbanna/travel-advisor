@@ -17,64 +17,74 @@ import PlaceDetails from "../PlaceDetails/PlaceDetails";
 //css
 import useStyles from "./styles";
 
-const List = ({ places, childClicked }) => {
+const List = ({ places, childClicked, isLoading }) => {
     const [type, setType] = useState("restuarents");
     const [rating, setRating] = useState("");
     const [elementRefs, setElementRefs] = useState([]);
     const classes = useStyles();
 
     useEffect(() => {
-        const refs = Array(places.length)
-            .fill()
-            .map((_, index) => elementRefs[index] || createRef());
-        setElementRefs(refs);
+        setElementRefs((refs) =>
+            Array(places?.length)
+                .fill()
+                .map((_, index) => refs[index] || createRef())
+        );
     }, [places]);
 
     return (
         <div className={classes.container}>
             <Typography variant="h4">Reastuarents, Hotels & Attraction around you</Typography>
-            <FormControl className={classes.formControl}>
-                <InputLabel>Type</InputLabel>
-                <Select
-                    value={""}
-                    onChange={(e) => setType(e.target.value)}
-                >
-                    <MenuItem value="restuarents">Restuarents</MenuItem>
-                    <MenuItem value="hotels">Hotels</MenuItem>
-                    <MenuItem value="attractions">Attractions</MenuItem>
-                </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-                <InputLabel>Rating</InputLabel>
-                <Select
-                    value={""}
-                    onChange={(e) => setType(e.target.value)}
-                >
-                    <MenuItem value={0}>All</MenuItem>
-                    <MenuItem value={3}>Above 3.0</MenuItem>
-                    <MenuItem value={4}>Above 4.0</MenuItem>
-                    <MenuItem value={4.5}>Above 4.5</MenuItem>
-                </Select>
-            </FormControl>
-            <Grid
-                container
-                spacing={3}
-                className={classes.list}
-            >
-                {places?.map((place, index) => (
+            {isLoading ? (
+                <div className={classes.isLoading}>
+                    <CircularProgress size="5rem" />
+                </div>
+            ) : (
+                <>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel>Type</InputLabel>
+                        <Select
+                            value={""}
+                            onChange={(e) => setType(e.target.value)}
+                        >
+                            <MenuItem value="restuarents">Restuarents</MenuItem>
+                            <MenuItem value="hotels">Hotels</MenuItem>
+                            <MenuItem value="attractions">Attractions</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel>Rating</InputLabel>
+                        <Select
+                            value={""}
+                            onChange={(e) => setType(e.target.value)}
+                        >
+                            <MenuItem value={0}>All</MenuItem>
+                            <MenuItem value={3}>Above 3.0</MenuItem>
+                            <MenuItem value={4}>Above 4.0</MenuItem>
+                            <MenuItem value={4.5}>Above 4.5</MenuItem>
+                        </Select>
+                    </FormControl>
                     <Grid
-                        item
-                        key={index}
-                        xs={12}
+                        container
+                        spacing={3}
+                        className={classes.list}
                     >
-                        <PlaceDetails
-                            place={place}
-                            selected={Number(childClicked) === index}
-                            refProp={elementRefs[index]}
-                        />
+                        {places?.map((place, index) => (
+                            <Grid
+                                item
+                                key={index}
+                                xs={12}
+                                ref={elementRefs[index]}
+                            >
+                                <PlaceDetails
+                                    place={place}
+                                    selected={Number(childClicked) === index}
+                                    refProp={elementRefs[index]}
+                                />
+                            </Grid>
+                        ))}
                     </Grid>
-                ))}
-            </Grid>
+                </>
+            )}
         </div>
     );
 };

@@ -17,6 +17,7 @@ const App = () => {
     const [coordinates, setCoordinates] = useState({});
     const [corners, setCorners] = useState({});
     const [childClicked, setChildClicked] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
     //fetching current location
     useEffect(() => {
@@ -26,12 +27,13 @@ const App = () => {
     }, []);
 
     useEffect(() => {
+        setLoading(true);
         getPlacesDetails(corners?.sw, corners?.ne).then((data) => {
             setPlaces(data);
+            setLoading(false);
         });
     }, [coordinates, corners]);
 
-    console.log({ childClicked });
     return (
         <>
             <CssBaseline />
@@ -49,6 +51,7 @@ const App = () => {
                     <List
                         places={places}
                         childClicked={childClicked}
+                        isLoading={isLoading}
                     />
                 </Grid>
 
